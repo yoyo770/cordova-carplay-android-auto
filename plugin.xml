@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-plugin-toastyplugin" version="0.0.1">
+    <name>ToastyPlugin</name>
+
+    <description>An Android Cordova plugin that allows users to display simple Toast messages at the bottom of the screen.</description>
+    <license>MIT</license>
+
+    <keywords>cordova,android,toast,message,alert</keywords>
+    <repo>https://github.com/yoyo770/carplay-audroidauto.git</repo>
+    <issue>https://github.com/stanidesis/toastyplugin/issues</issue>
+  
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+  
+    <js-module src="www/toastyplugin.js" name="toastyPlugin">
+        <clobbers target="window.plugins.toastyPlugin" />
+    </js-module>
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ToastyPlugin">
+                <param name="android-package" value="com.stanleyidesis.cordova.plugin.ToastyPlugin"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/ToastyPlugin.java" target-dir="src/com/stanleyidesis/cordova/plugin" />
+    </platform>
+
+   <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="ToastyPlugin">
+        <param name="ios-package" value="ToastyPlugin" />
+      </feature>
+    </config-file>
+    <source-file src="src/ios/ToastyPlugin.swift" />
+  </platform>
+</plugin>

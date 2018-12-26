@@ -10,7 +10,7 @@
     },
     "repository": {
       "type": "git",
-      "url": "git+https://github.com/yoyo770/carplay-audroidauto.git"
+      "url": "git+https://github.com/yoyo770/cordova-carplay-android-auto.git"
     },
     "keywords": [
       "Toast",

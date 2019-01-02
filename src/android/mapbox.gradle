@@ -1,0 +1,16 @@
+repositories {
+    jcenter()
+    mavenCentral()
+        maven { url 'https://mapbox.bintray.com/mapbox' }
+}
+
+dependencies {
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.8.1'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.26.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.26.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+}
+
+android {
+    buildToolsVersion '23.0.2' // Older versions may give compile errors
+}

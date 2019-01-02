@@ -21,11 +21,34 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ToastyPlugin">
-                <param name="android-package" value="com.stanleyidesis.cordova.plugin.ToastyPlugin"/>
+                <param name="android-package" value="com.yossicohen.cordova.plugin.mapbox"/>
             </feature>
         </config-file>
 
-        <source-file src="src/android/ToastyPlugin.java" target-dir="src/com/stanleyidesis/cordova/plugin" />
+      
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+          <meta-data
+                android:name="com.google.android.gms.car.application"
+                android:resource="@xml/automotive_app_desc" />
+                <service
+                android:name="com.stanleyidesis.MyMusicService"
+                android:exported="true">
+                    <intent-filter>
+                        <action android:name="android.media.browse.MediaBrowserService" />
+                    </intent-filter>
+            </service>
+
+            
+        </config-file> 
+
+
+        <source-file src="src/android/MyMusicService.java" target-dir="src/com/stanleyidesis/" />
+ <source-file src="src/android/ToastyPlugin.java" target-dir="src/com/stanleyidesis/cordova/plugin" />
+
+        <resource-file src="src/android/automotive_app_desc.xml" target="res/xml/automotive_app_desc.xml" />
+
+        <framework src="src/android/mapbox.gradle" custom="true" type="gradleReference"/>
     </platform>
 
    <platform name="ios">

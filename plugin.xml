@@ -28,24 +28,22 @@
       
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-          <meta-data
+            <meta-data
                 android:name="com.google.android.gms.car.application"
                 android:resource="@xml/automotive_app_desc" />
-                <service
-                android:name="com.stanleyidesis.MyMusicService"
-                android:exported="true">
-                    <intent-filter>
-                        <action android:name="android.media.browse.MediaBrowserService" />
-                    </intent-filter>
-            </service>
 
-            
+            <service
+            android:name="com.stanleyidesis.MyMusicService"
+            android:exported="true">
+                <intent-filter>
+                    <action android:name="android.media.browse.MediaBrowserService" />
+                </intent-filter>
+            </service>
         </config-file> 
 
 
         <source-file src="src/android/MyMusicService.java" target-dir="src/com/stanleyidesis/" />
- <source-file src="src/android/ToastyPlugin.java" target-dir="src/com/stanleyidesis/cordova/plugin" />
-
+        <source-file src="src/android/ToastyPlugin.java" target-dir="src/com/stanleyidesis/cordova/plugin" />
         <resource-file src="src/android/automotive_app_desc.xml" target="res/xml/automotive_app_desc.xml" />
 
         <framework src="src/android/mapbox.gradle" custom="true" type="gradleReference"/>
@@ -57,6 +55,13 @@
         <param name="ios-package" value="ToastyPlugin" />
       </feature>
     </config-file>
+		<config-file parent="com.apple.developer.carplay-maps" target="*/Entitlements-Debug.plist">
+		    <true/>
+		</config-file>
+		<config-file parent="com.apple.developer.carplay-maps" target="*/Entitlements-Release.plist">
+            <true/>
+		</config-file>
     <source-file src="src/ios/ToastyPlugin.swift" />
   </platform>
+
 </plugin>

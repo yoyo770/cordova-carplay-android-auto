@@ -19,13 +19,12 @@
         <clobbers target="window.plugins.toastyPlugin" />
     </js-module>
     <platform name="android">
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ToastyPlugin">
                 <param name="android-package" value="com.yossicohen.cordova.plugin.mapbox"/>
             </feature>
         </config-file>
-
-      
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <meta-data
@@ -62,6 +61,8 @@
             <true/>
 		</config-file>
     <source-file src="src/ios/ToastyPlugin.swift" />
+    
+    <header-file src="src/ios/Bridging-Header.h"/>
   </platform>
 
 </plugin>

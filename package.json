@@ -20,12 +20,15 @@
       "ecosystem:cordova",
       "cordova-android"
     ],
-    "engines": [
-      {
-        "name": "cordova",
-        "version": ">=3.0.0"
+    "engines": {
+      "cordovaDependencies": {
+          "1.0.0": { 
+            "cordova-ios": ">=4.4.0",
+            "cordova-android": ">6.3.0",
+            "cordova": ">=7.0.0"
+          }
       }
-    ],
+    },
     "author": "Stanley Idesis <stan.idesis@gmail.com>",
     "license": "MIT",
     "bugs": {

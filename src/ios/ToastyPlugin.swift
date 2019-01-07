@@ -1,10 +1,17 @@
  import Foundation
 import UIKit
+ import Mapbox
+ import MapboxCoreNavigation
+ import MapboxNavigation
+ import MapboxDirections
 #if canImport(CarPlay)
 import CarPlay
  
 @available(iOS 12.0, *)
 @objc(ToastyPlugin) class ToastyPlugin : CDVPlugin {
+    
+    var mapVC: ViewController?
+    var navVC: NavigationViewController?
     lazy var barBtn: CPBarButton = {
         let barButton = CPBarButton(type: .text) { [weak self] (button: CPBarButton) in
             guard let strongSelf = self else {
@@ -19,65 +26,63 @@ import CarPlay
         return barButton
     }()
     
+    override func pluginInitialize() {
+        super.pluginInitialize()
+        NotificationCenter.default.addObserver(self, selector: #selector(pageDidLoad), name: NSNotification.Name.CDVPageDidLoad, object: nil)
+        
+    }
     
-    
+    @objc func pageDidLoad() {
+        self.webView?.isOpaque = false
+        self.webView?.backgroundColor = UIColor.clear
+    }
     
   @objc(show:)
   func show(command: CDVInvokedUrlCommand) {
    
+//    let vc = ViewController()
+//    self.mapVC = vc
     
-   
-    var pluginResult = CDVPluginResult(
-      status: CDVCommandStatus_ERROR
-    )
-
-    let param = command.arguments[0] as AnyObject;
-    
-    var str:AnyObject?
-    str = param["message"] as AnyObject?
-    let msg = str as! String
-    let template = CarPlayManager.shared.mapTemplate
-    let buttons = template?.leadingNavigationBarButtons
-    for btn in buttons! {
-        btn.title = msg
+    // Calculate the route from the user's location to the set destination
+    self.calculateRoute(from: CLLocationCoordinate2D.init(latitude: 48.8885911, longitude: 2.165825), to: CLLocationCoordinate2D.init(latitude: 43.9783, longitude: 4.9039)) { (route, error) in
+        if error != nil {
+            print("Error calculating route")
+        }
     }
-    template?.leadingNavigationBarButtons = buttons!
     
+//    let myView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+//    myView.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+    //self.webView.superview?.insertSubview(myView, aboveSubview: self.webView)
+    //self.webView.superview?.insertSubview(self.mapVC!.view, belowSubview: self.webView)
     
-    
-    if msg.count > 0 {
-      let toastController: UIAlertController =
-        UIAlertController(
-          title: "",
-          message: msg,
-          preferredStyle: .alert
-        )
-        
-      self.viewController?.present(
-        toastController,
-        animated: true,
-        completion: nil
-      )
-
-      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-        toastController.dismiss(
-            animated: true,
-            completion: nil
-        )
-      }
-        
-      pluginResult = CDVPluginResult(
-        status: CDVCommandStatus_OK,
-        messageAs: msg
-      )
-    }
-
-    self.commandDelegate!.send(
-      pluginResult,
-      callbackId: command.callbackId
-    )
     
   }
+    
+    // Calculate route to be used for navigation
+    func calculateRoute(from origin: CLLocationCoordinate2D,
+                        to destination: CLLocationCoordinate2D,
+                        completion: @escaping (Route?, Error?) -> ()) {
+        
+        // Coordinate accuracy is the maximum distance away from the waypoint that the route may still be considered viable, measured in meters. Negative values indicate that a indefinite number of meters away from the route and still be considered viable.
+        let origin = Waypoint(coordinate: origin, coordinateAccuracy: -1, name: "Start")
+        let destination = Waypoint(coordinate: destination, coordinateAccuracy: -1, name: "Finish")
+        
+        // Specify that the route is intended for automobiles avoiding traffic
+        let options = NavigationRouteOptions(waypoints: [origin, destination], profileIdentifier: .automobileAvoidingTraffic)
+        
+        // Generate the route object and draw it on the map
+        _ = Directions.shared.calculate(options) { [weak self] (waypoints, routes, error) in
+            
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if let directionsRoute = routes?.first {
+                strongSelf.navVC = NavigationViewController(for: directionsRoute)
+                strongSelf.webView.superview?.insertSubview((strongSelf.navVC?.view)!, belowSubview: strongSelf.webView)
+            }
+        }
+    }
 }
 
 @available(iOS 12.0, *)

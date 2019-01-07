@@ -49,20 +49,31 @@
     </platform>
 
    <platform name="ios">
-    <config-file target="config.xml" parent="/*">
-      <feature name="ToastyPlugin">
-        <param name="ios-package" value="ToastyPlugin" />
-      </feature>
-    </config-file>
+        <framework src="Mapbox-iOS-SDK" type="podspec" spec="~> 4.7" />
+        <framework src="MapboxNavigation" type="podspec" spec="~> 0.26" />
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="ToastyPlugin">
+                <param name="ios-package" value="ToastyPlugin" />
+            </feature>
+        </config-file>
+
 		<config-file parent="com.apple.developer.carplay-maps" target="*/Entitlements-Debug.plist">
 		    <true/>
 		</config-file>
+
 		<config-file parent="com.apple.developer.carplay-maps" target="*/Entitlements-Release.plist">
             <true/>
 		</config-file>
-    <source-file src="src/ios/ToastyPlugin.swift" />
-    
-    <header-file src="src/ios/Bridging-Header.h"/>
-  </platform>
 
+        <source-file src="src/ios/ToastyPlugin.swift" />
+        <source-file src="src/ios/ViewController.swift" />
+        <header-file src="src/ios/Bridging-Header.h"/>
+
+  </platform>
+    <engines>
+        <engine name="cordova" version=">=7.0.0" />
+        <engine name="cordova-android" version=">=6.3.0" />
+        <engine name="cordova-ios" version=">=4.4.0" />
+    </engines>
 </plugin>
